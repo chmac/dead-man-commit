@@ -1,4 +1,5 @@
 import { DEFAULT_ACTIVATE_AFTER_SECONDS } from "../../constants.ts";
+import { doesDirectoryExist } from "../../fs.utils.ts";
 import { getNewAndModifiedFiles } from "./getNewAndModifiedFiles.ts";
 import { isDetachedHead } from "./isDetachedHead.ts";
 import { secondsSinceLastChange } from "./secondsSinceLastChange.ts";
@@ -17,6 +18,14 @@ export const deadManCommit = async ({
   repoPath: string;
   delaySeconds: number;
 }): Promise<Success | Failure> => {
+  const exists = await doesDirectoryExist(repoPath);
+  if (!exists) {
+    return {
+      success: false,
+      errors: [`#VcepTF Repo path does not exist`],
+    };
+  }
+
   const filesResult = await getNewAndModifiedFiles({ repoPath });
 
   if (!filesResult.success) {
