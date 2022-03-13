@@ -14,4 +14,4 @@ export const logSetup = async (consoleLevel: "DEBUG" | "INFO" | "ERROR") => {
   });
 };
 
-export const logger = log.getLogger();
+export const getLogger = () => log.getLogger();

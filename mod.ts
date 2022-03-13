@@ -1,5 +1,5 @@
 import { parse } from "./deps.ts";
-import { logSetup, logger } from "./src/logger.ts";
+import { logSetup, getLogger } from "./src/logger.ts";
 import { loadRepos } from "./src/config.ts";
 import { deadManCommit } from "./src/services/repo/repo.ts";
 
@@ -11,6 +11,8 @@ const start = async () => {
   const consoleLevel = debug ? "DEBUG" : verbose ? "INFO" : "ERROR";
 
   await logSetup(consoleLevel);
+
+  const logger = getLogger();
 
   const repos = await loadRepos();
 
