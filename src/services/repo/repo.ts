@@ -1,4 +1,5 @@
 import { DEFAULT_ACTIVATE_AFTER_SECONDS } from "../../constants.ts";
+import { getLogger } from "../../logger.ts";
 import { doesDirectoryExist } from "../../fs.utils.ts";
 import { getNewAndModifiedFiles } from "./getNewAndModifiedFiles.ts";
 import { isDetachedHead } from "./isDetachedHead.ts";
@@ -18,6 +19,8 @@ export const deadManCommit = async ({
   repoPath: string;
   delaySeconds: number;
 }): Promise<Success | Failure> => {
+  const logger = getLogger();
+
   const exists = await doesDirectoryExist(repoPath);
   if (!exists) {
     return {
@@ -31,6 +34,20 @@ export const deadManCommit = async ({
   if (!filesResult.success) {
     return filesResult;
   }
+
+  if (filesResult.files.length === 0) {
+    logger.debug({
+      message: `#zVEYX6 No changed files, nothing to do`,
+      repoPath,
+    });
+    return { success: true };
+  }
+
+  logger.debug({
+    message: `#DHU3Fr Got changed files`,
+    repoPath,
+    files: filesResult.files,
+  });
 
   const isDetachedHeadResult = await isDetachedHead({ repoPath });
   if (isDetachedHeadResult.isDetachedHead) {
@@ -50,6 +67,12 @@ export const deadManCommit = async ({
   }
 
   if (secondsResult.seconds > delaySeconds) {
+    logger.debug({
+      message: `#qv3c9w Found changes older than delay`,
+      repoPath,
+      newestChangeInSeconds: secondsResult.seconds,
+    });
+
     const addResult = await gitAdd({ repoPath });
     if (!addResult.success) {
       return addResult;
@@ -64,6 +87,11 @@ export const deadManCommit = async ({
     if (!pushResult.success) {
       return pushResult;
     }
+  } else {
+    logger.debug({
+      message: `#MqvNAI Changes are too recent, nothing to do yet in`,
+      repoPath,
+    });
   }
 
   return { success: true };
