@@ -9,15 +9,7 @@ export const gitCommit = async ({
   repoPath: string;
 }): Promise<Success | Failure> => {
   const command = await run({
-    cmd: [
-      "echo",
-      "git",
-      "-C",
-      repoPath,
-      "commit",
-      "--message",
-      DEFAULT_COMMIT_MESSAGE,
-    ],
+    cmd: ["git", "-C", repoPath, "commit", "--message", DEFAULT_COMMIT_MESSAGE],
   });
 
   if (command.success) {
