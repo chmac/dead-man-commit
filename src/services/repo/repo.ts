@@ -91,6 +91,7 @@ export const deadManCommit = async ({
     logger.debug({
       message: `#MqvNAI Changes are too recent, nothing to do yet in`,
       repoPath,
+      mostRecentChangeSeconds: secondsResult.seconds,
       delaySeconds,
     });
   }
