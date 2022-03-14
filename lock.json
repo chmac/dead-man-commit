@@ -84,5 +84,15 @@
   "https://deno.land/x/zod@v3.13.4/helpers/util.ts": "28dc23a1160ef0178b5e4144a90cd310227e8c0a065203e72a7ffee70dfb1ab4",
   "https://deno.land/x/zod@v3.13.4/index.ts": "035a7422d9f2be54daa0fe464254b69225b443000673e4794095d672471e8792",
   "https://deno.land/x/zod@v3.13.4/mod.ts": "64e55237cb4410e17d968cd08975566059f27638ebb0b86048031b987ba251c4",
-  "https://deno.land/x/zod@v3.13.4/types.ts": "b8828d1cee1530a6bb932276f56ed0cec95f50682ca86c4f8854c3633cf04cbd"
+  "https://deno.land/x/zod@v3.13.4/types.ts": "b8828d1cee1530a6bb932276f56ed0cec95f50682ca86c4f8854c3633cf04cbd",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/deepmerge.ts": "1d5ddc10ffeed53b9f9655eff44a5131413791f1d0aef80f560c74d3f6855c27",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/index.ts": "1d8a75ba9d2c204d67de0a724b1b83de64a65df40b0c606f5aec7109463466bd",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/mod.ts": "882e3724ca160624f934070ead4633e971f81a90dcedc03a428f20769e96307b",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/types/defaults.ts": "01f2064cac5481374a54200e7c85ba45512289984a77a47e7fc94ef66c6c3a30",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/types/index.ts": "276d75bf9fb8d338bd84ed0357ea12a52a6b4da06c0a499c0e8ccbd4b57cf093",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/types/merging.ts": "c4f591bc29a75b7a1fa273fde2cb87f2e27c3d93aeb722947c5f9e83169ee5bc",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/types/options.ts": "49749d9163595b0910a08068d6cbebdccd090db81be404517f83bfead232aaa7",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/types/utils.ts": "4c540899d9cc8442d641ce63b4805772094a47724a4632c3a7af80d9027f8554",
+  "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/utils.ts": "ba0c5bad18f6bcdc243bf1041c7a0d823e5d5a56ce844d86f191b91bc45c1d3a",
+  "https://raw.githubusercontent.com/jonschlinkert/is-plain-object/v5.0.0/is-plain-object.js": "a8376c49d639d8b358033f58b750d33936c7402e094ef9a5f60ff442a032b42a"
 }

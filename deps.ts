@@ -7,3 +7,5 @@ import configDir from "https://deno.land/x/config_dir@v0.1.1/mod.ts";
 export { configDir };
 export * as YAML from "https://deno.land/std@0.129.0/encoding/yaml.ts";
 export * as z from "https://deno.land/x/zod@v3.13.4/mod.ts";
+// export { deepmerge } from "https://deno.land/x/deepmergets@v4.0.0/dist/deno/mod.ts";
+export { deepmerge } from "https://raw.githubusercontent.com/GenerousLabs/deepmerge-ts/3004e954dd06bfc3e2aaf7c98bc97a50c635fb10/dist/deno/mod.ts";
