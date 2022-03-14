@@ -1,4 +1,4 @@
-import { log } from "../deps.ts";
+import { datetime, log } from "../deps.ts";
 
 export const logSetup = async ({
   file,
@@ -13,7 +13,14 @@ export const logSetup = async ({
       ? {
           file: new log.handlers.FileHandler(level, {
             filename: file,
-            formatter: `{datetime} {levelName} {msg}`,
+            formatter: (logRecord) => {
+              const date = datetime.format(
+                logRecord.datetime,
+                `yyyy-MM-dd_HH:mm:ss.SSS`
+              );
+              const level = logRecord.levelName.padEnd(8, " ");
+              return `${date} ${level} ${logRecord.msg}`;
+            },
           }),
         }
       : {}),
