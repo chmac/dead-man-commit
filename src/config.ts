@@ -1,4 +1,4 @@
-import { join, YAML, configDir, z } from "../deps.ts";
+import { configDir, deepmerge, join, YAML, z } from "../deps.ts";
 import {
   DEFAULT_ACTIVATE_AFTER_SECONDS,
   PACKAGE_CONFIG_FILENAME,
@@ -12,11 +12,40 @@ const RepoSchema = z.object({
 });
 type Repo = z.infer<typeof RepoSchema>;
 
-const ConfigSchema = z.object({
+const LogLevelSchema = z
+  .literal("ERROR")
+  .or(z.literal("INFO"))
+  .or(z.literal("DEBUG"));
+const ConfigFileSchema = z.object({
   version: z.number(),
+  log: z
+    .object({
+      file: z.string().optional(),
+      level: LogLevelSchema.optional(),
+    })
+    .optional(),
   repos: RepoSchema.or(z.string()).array(),
 });
+
+const ConfigSchema = z.object({
+  version: z.literal(1),
+  log: z.object({
+    file: z.string().optional(),
+    level: LogLevelSchema,
+  }),
+  repos: RepoSchema.array(),
+});
 type Config = z.infer<typeof ConfigSchema>;
+
+const baseConfig: Config = {
+  // NOTE: We cast 0 as 1 to pass the type check for `Config` as we check later
+  // that this is overwritten
+  version: 0 as 1,
+  log: {
+    level: "ERROR",
+  },
+  repos: [],
+};
 
 export const loadConfig = async (): Promise<Config> => {
   const configDirPath = configDir();
@@ -53,22 +82,35 @@ export const loadConfig = async (): Promise<Config> => {
 
   const parsedConfig = YAML.parse(configContents);
 
-  const config = ConfigSchema.parse(parsedConfig);
+  const config = ConfigFileSchema.parse(parsedConfig);
 
-  if (config.version !== 1) {
-    throw new Error("#wqHafz Invalid config version");
-  }
+  const { repos, ...configToMerge } = config;
 
-  return config;
-};
-
-export const loadRepos = async (): Promise<Repo[]> => {
-  const { repos } = await loadConfig();
   const convertedRepos = repos.map((repo) => {
     if (typeof repo === "string") {
       return { path: repo, delay: DEFAULT_ACTIVATE_AFTER_SECONDS };
     }
     return repo;
   });
-  return convertedRepos;
+
+  // NOTE: We need to cast to `Config` here because `log.level` can be
+  // `undefined` in the config file, and TypeScript doesn't know that the
+  // default vaule exists. There's likely a better way.
+  const output = deepmerge(baseConfig, configToMerge, {
+    repos: convertedRepos,
+  }) as Config;
+
+  if (output.version !== 1) {
+    throw new Error("#wqHafz Invalid config version");
+  }
+
+  // A final double check to make sure the output matches the output schema
+  ConfigSchema.parse(output);
+
+  return output;
+};
+
+export const loadRepos = async (): Promise<Repo[]> => {
+  const { repos } = await loadConfig();
+  return repos;
 };

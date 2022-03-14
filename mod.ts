@@ -1,20 +1,23 @@
-import { parse } from "./deps.ts";
+import { parse, log } from "./deps.ts";
 import { logSetup, getLogger } from "./src/logger.ts";
-import { loadRepos } from "./src/config.ts";
+import { loadConfig } from "./src/config.ts";
 import { deadManCommit } from "./src/services/repo/repo.ts";
+
+let logger: log.Logger;
 
 const start = async () => {
   const args = parse(Deno.args);
+  const { log, repos } = await loadConfig();
 
   const verbose = args.v || args.verbose || false;
   const debug = args.d || args.debug || false;
-  const consoleLevel = debug ? "DEBUG" : verbose ? "INFO" : "ERROR";
+  const argsConsoleLevel = debug ? "DEBUG" : verbose ? "INFO" : "ERROR";
+  const { file } = log;
+  const level = verbose || debug ? argsConsoleLevel : log.level;
 
-  await logSetup(consoleLevel);
+  await logSetup({ file, level });
 
-  const logger = getLogger();
-
-  const repos = await loadRepos();
+  logger = getLogger();
 
   const results = await Promise.all(
     repos.map(async (repo) => {
@@ -45,6 +48,8 @@ const start = async () => {
 };
 
 start().catch((error) => {
-  console.error(`#Fdisfb Fatal error`);
-  console.dir(error);
+  // If start() throws before `logSetup()` then `logger` is undefined
+  const logError = typeof logger === "undefined" ? console.error : logger.error;
+  logError(`#Fdisfb Fatal error`);
+  logError(error);
 });

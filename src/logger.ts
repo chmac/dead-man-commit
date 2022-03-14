@@ -1,14 +1,28 @@
 import { log } from "../deps.ts";
 
-export const logSetup = async (consoleLevel: "DEBUG" | "INFO" | "ERROR") => {
+export const logSetup = async ({
+  file,
+  level,
+}: {
+  file?: string;
+  level: "DEBUG" | "INFO" | "ERROR";
+}) => {
+  const handlers = {
+    console: new log.handlers.ConsoleHandler(level),
+    ...(typeof file === "string"
+      ? {
+          file: new log.handlers.FileHandler(level, {
+            filename: file,
+          }),
+        }
+      : {}),
+  };
   await log.setup({
-    handlers: {
-      console: new log.handlers.ConsoleHandler("DEBUG"),
-    },
+    handlers,
     loggers: {
       default: {
-        level: consoleLevel,
-        handlers: ["console"],
+        level: level,
+        handlers: Object.keys(handlers),
       },
     },
   });
