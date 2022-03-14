@@ -13,6 +13,7 @@ export const logSetup = async ({
       ? {
           file: new log.handlers.FileHandler(level, {
             filename: file,
+            formatter: `{datetime} {levelName} {msg}`,
           }),
         }
       : {}),
