@@ -1,3 +1,4 @@
+import { doesFileExist } from "../../fs.utils.ts";
 import { difference, join } from "../../../deps.ts";
 
 type Success = { success: true; seconds: number };
@@ -14,6 +15,13 @@ export const secondsSinceLastChange = async ({
   const secondsAgoOrErrors = await Promise.all(
     files.map(async (file): Promise<number | string> => {
       const filePath = join(repoPath, file);
+
+      const exists = await doesFileExist(filePath);
+      if (!exists) {
+        // NOTE: Returning -1 signals this file does not exist
+        return -1;
+      }
+
       const stat = await Deno.lstat(filePath);
       if (stat.mtime === null) {
         return `#11gBxX ERROR Failed to get mtime for file ${filePath}`;
@@ -36,7 +44,12 @@ export const secondsSinceLastChange = async ({
     };
   }
 
-  const seconds = Math.min(...(secondsAgoOrErrors as number[]));
+  // Remove any `-1` for non existent files
+  const secondsFiltered = (secondsAgoOrErrors as number[]).filter(
+    (s) => s !== -1
+  );
+
+  const seconds = Math.min(...secondsFiltered);
 
   return { success: true, seconds };
 };

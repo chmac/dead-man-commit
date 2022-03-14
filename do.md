@@ -1,3 +1,4 @@
+- [x] Deleted files don't exist and so throw
 - [ ] Add a log file and level option to the config file
 - [ ] Create more sophisticated commit messages
 - [ ] Add option to disable pushing
