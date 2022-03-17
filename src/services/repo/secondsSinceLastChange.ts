@@ -49,6 +49,13 @@ export const secondsSinceLastChange = async ({
     (s) => s !== -1
   );
 
+  // If there are only files which have been deleted, they will all be filtered
+  // out, and so at this point we have no changes which we can determine when
+  // they occurred. Thus, return -1.
+  if (secondsFiltered.length === 0) {
+    return { success: true, seconds: -1 };
+  }
+
   const seconds = Math.min(...secondsFiltered);
 
   return { success: true, seconds };
