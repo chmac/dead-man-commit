@@ -1,4 +1,8 @@
 - [x] Deleted files don't exist and so throw
+- [ ] Staged files are ignored, so auto commits can happen unexpectedly
+  - Change files, add some to a commit, wait, auto commit happens
+  - Maybe need to use `git status --short` instead (or as well?)
+  - Could also check if anything is staged and abort if so
 - [ ] Add a log file and level option to the config file
 - [ ] Create more sophisticated commit messages
 - [ ] Add option to disable pushing
