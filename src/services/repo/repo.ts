@@ -2,11 +2,12 @@ import { DEFAULT_ACTIVATE_AFTER_SECONDS } from "../../constants.ts";
 import { getLogger } from "../../logger.ts";
 import { doesDirectoryExist } from "../../fs.utils.ts";
 import { getNewAndModifiedFiles } from "./getNewAndModifiedFiles.ts";
-import { isDetachedHead } from "./isDetachedHead.ts";
-import { secondsSinceLastChange } from "./secondsSinceLastChange.ts";
+import { getStagedFiles } from "./getStagedFiles.ts";
 import { gitAdd } from "./gitAdd.ts";
 import { gitCommit } from "./gitCommit.ts";
 import { gitPush } from "./gitPush.ts";
+import { isDetachedHead } from "./isDetachedHead.ts";
+import { secondsSinceLastChange } from "./secondsSinceLastChange.ts";
 
 export const textDecoder = new TextDecoder();
 
@@ -50,6 +51,9 @@ export const deadManCommit = async ({
   });
 
   const isDetachedHeadResult = await isDetachedHead({ repoPath });
+  if (!isDetachedHeadResult.success) {
+    return isDetachedHeadResult;
+  }
   if (isDetachedHeadResult.isDetachedHead) {
     return {
       success: true,
@@ -57,9 +61,16 @@ export const deadManCommit = async ({
     };
   }
 
+  const stagedFilesResult = await getStagedFiles({ repoPath });
+  if (!stagedFilesResult.success) {
+    return stagedFilesResult;
+  }
+
+  const files = filesResult.files.concat(stagedFilesResult.files);
+
   const secondsResult = await secondsSinceLastChange({
     repoPath,
-    files: filesResult.files,
+    files,
   });
 
   if (!secondsResult.success) {
