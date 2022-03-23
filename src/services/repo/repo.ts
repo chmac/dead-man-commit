@@ -43,7 +43,7 @@ export const deadManCommit = async ({
     return { success: true };
   }
 
-  logger.debug({
+  logger.info({
     message: `#DHU3Fr Got changed files`,
     repoPath,
     files: filesResult.files,
@@ -88,7 +88,7 @@ export const deadManCommit = async ({
       return pushResult;
     }
   } else {
-    logger.debug({
+    logger.info({
       message: `#MqvNAI Changes are too recent, nothing to do yet`,
       repoPath,
       mostRecentChangeSeconds: secondsResult.seconds,
