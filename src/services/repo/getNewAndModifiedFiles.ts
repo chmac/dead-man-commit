@@ -22,7 +22,7 @@ export const getNewAndModifiedFiles = async ({
   if (!result.success) {
     return {
       success: false,
-      errors: [`#8eKr7E Error running git command`],
+      errors: [`#8eKr7E Error running git ls-files`],
     };
   }
 
