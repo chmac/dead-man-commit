@@ -7,3 +7,7 @@
 - [ ] Create more sophisticated commit messages
 - [ ] Add option to disable pushing
 - [ ] How to handle `git push` conflicts
+- [ ] Automatically enable `git push` (optionally?)
+  - Then commits get auto "synced", another thing not to forget
+  - How to handle merge errors?
+    - In the usual case, it'd be nice to commit and not have to push, but then there'd be no warning that something went awry
