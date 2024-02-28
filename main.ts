@@ -1,6 +1,6 @@
-import { parse, log } from "./deps.ts";
-import { logSetup, getLogger } from "./src/logger.ts";
+import { log, parse } from "./deps.ts";
 import { loadConfig } from "./src/config.ts";
+import { getLogger, logSetup } from "./src/logger.ts";
 import { deadManCommit } from "./src/services/repo/repo.ts";
 
 let logger: log.Logger;

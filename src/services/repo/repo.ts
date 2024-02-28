@@ -8,6 +8,7 @@ import { gitCommit } from "./gitCommit.ts";
 import { gitPush } from "./gitPush.ts";
 import { isDetachedHead } from "./isDetachedHead.ts";
 import { secondsSinceLastChange } from "./secondsSinceLastChange.ts";
+import { hasCommitsToPush } from "./hasCommitsToPush.ts";
 
 export const textDecoder = new TextDecoder();
 
@@ -28,6 +29,21 @@ export const deadManCommit = async ({
       success: false,
       errors: [`#VcepTF Repo path does not exist`],
     };
+  }
+
+  const hasCommitsToPushResult = await hasCommitsToPush({ repoPath });
+
+  if (!hasCommitsToPushResult.success) {
+    logger.error({
+      message: `#QNhqH8 Error checking for commits to push`,
+      repoPath,
+      errors: hasCommitsToPushResult.errors,
+    });
+  } else {
+    if (hasCommitsToPushResult.hasCommitsToPush) {
+      await gitPush({ repoPath });
+      logger.info({ message: `#QTcvTU Pushed repo`, repoPath });
+    }
   }
 
   const filesResult = await getNewAndModifiedFiles({ repoPath });
