@@ -1,7 +1,7 @@
 {
   "tasks": {
     "cache": "deno cache deps.ts",
-    "run": "deno run --allow-run --allow-env --allow-read main.ts",
-    "compile": "deno compile --allow-run --allow-env --allow-read --output ./build/dead-man-commit.x86_64-apple-darwin main.ts"
+    "run": "deno run --allow-run --allow-env --allow-read --allow-write main.ts",
+    "compile": "deno compile --allow-run --allow-env --allow-read --allow-write --output ./build/dead-man-commit.x86_64-apple-darwin main.ts"
   }
 }
