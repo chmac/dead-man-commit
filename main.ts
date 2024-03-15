@@ -32,8 +32,11 @@ const start = async () => {
   for (const repo of results) {
     const { path, result } = repo;
     if (!result.success) {
-      logger.error(`#vmdFnp Error(s) encountered in repo at ${path}`);
-      logger.error(result.errors);
+      logger.error({
+        message: `#vmdFnp Error(s) encountered`,
+        repoPath: path,
+        errors: result.errors,
+      });
     } else {
       logger.info(`#GTE28L Successfully processed repo ${path}`);
       if (typeof result.info === "string") {
