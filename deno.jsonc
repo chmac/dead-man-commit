@@ -2,6 +2,8 @@
   "tasks": {
     "cache": "deno cache deps.ts",
     "run": "deno run --allow-run --allow-env --allow-read --allow-write main.ts",
-    "compile": "deno compile --allow-run --allow-env --allow-read --allow-write --output ./build/dead-man-commit.x86_64-apple-darwin main.ts"
+    "compile:arm64": "deno compile --allow-run --allow-env --allow-read --allow-write --target aarch64-apple-darwin --output ./build/dead-man-commit.aarch64-apple-darwin main.ts",
+    "compile:x86": "deno compile --allow-run --allow-env --allow-read --allow-write --target x86_64-apple-darwin --output ./build/dead-man-commit.x86_64-apple-darwin main.ts",
+    "compile": "deno task compile:arm64 && deno task compile:x86"
   }
 }
