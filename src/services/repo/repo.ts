@@ -41,8 +41,16 @@ export const deadManCommit = async ({
     });
   } else {
     if (hasCommitsToPushResult.hasCommitsToPush) {
-      await gitPush({ repoPath });
-      logger.info({ message: `#QTcvTU Pushed repo`, repoPath });
+      const earlyPushResult = await gitPush({ repoPath });
+      if (earlyPushResult.success) {
+        logger.info({ message: `#QTcvTU Pushed repo`, repoPath });
+      } else {
+        logger.error({
+          message: `#YgRStH Error pushing repo`,
+          repoPath,
+          errors: earlyPushResult.errors,
+        });
+      }
     }
   }
 
