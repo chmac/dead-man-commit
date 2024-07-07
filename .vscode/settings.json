@@ -1,6 +1,5 @@
 {
   "deno.enable": true,
-  "deno.path": "/usr/local/bin/deno",
   "deno.internalDebug": false,
   "deno.lint": true,
   "deno.unstable": false
