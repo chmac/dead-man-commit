@@ -38,7 +38,10 @@ const start = async () => {
         errors: result.errors,
       });
     } else {
-      logger.info(`#GTE28L Successfully processed repo ${path}`);
+      logger.info({
+        message: `#GTE28L Successfully processed repo`,
+        repoPath: path,
+      });
       if (typeof result.info === "string") {
         logger.info(result.info);
       }
