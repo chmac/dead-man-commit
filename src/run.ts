@@ -7,22 +7,14 @@ export const run = async ({
 }: {
   cmd: string[];
 }): Promise<Success | Failure> => {
-  const command = Deno.run({
-    cmd,
-    stdout: "piped",
-    stderr: "piped",
-  });
-
-  const [status, stdout, stderr] = await Promise.all([
-    command.status(),
-    command.output(),
-    command.stderrOutput(),
-  ]);
+  const [program, ...args] = cmd;
+  const command = new Deno.Command(program, { args });
+  const { success, stdout, stderr } = await command.output();
 
   // NOTE: stdout can have a trailing newline so we trim it
   const output = textDecoder.decode(stdout).trim();
 
-  if (!status.success) {
+  if (!success) {
     // NOTE: stderr can have a trailing newline so we trim it
     const error = textDecoder.decode(stderr).trim();
     return { success: false, output, error };
