@@ -9,6 +9,7 @@ import { gitPush } from "./gitPush.ts";
 import { isDetachedHead } from "./isDetachedHead.ts";
 import { secondsSinceLastChange } from "./secondsSinceLastChange.ts";
 import { hasCommitsToPush } from "./hasCommitsToPush.ts";
+import { gitPull } from "./gitPull.ts";
 
 export const textDecoder = new TextDecoder();
 
@@ -61,8 +62,13 @@ export const deadManCommit = async ({
   }
 
   if (filesResult.files.length === 0) {
+    const pullResult = await gitPull({ repoPath });
+    if (!pullResult.success) {
+      return pullResult;
+    }
+
     logger.debug({
-      message: `#zVEYX6 No changed files, nothing to do`,
+      message: `#zVEYX6 No changed files, pulled`,
       repoPath,
     });
     return { success: true };
@@ -123,8 +129,13 @@ export const deadManCommit = async ({
       return pushResult;
     }
   } else {
+    const pullResult = await gitPull({ repoPath });
+    if (!pullResult.success) {
+      return pullResult;
+    }
+
     logger.info({
-      message: `#MqvNAI Changes are too recent, nothing to do yet`,
+      message: `#MqvNAI Changes are too recent, pulled`,
       repoPath,
       mostRecentChangeSeconds: secondsResult.seconds,
       delaySeconds,
