@@ -2,6 +2,20 @@ import { DEFAULT_COMMIT_MESSAGE } from "../../constants.ts";
 import { getLogger } from "../../logger.ts";
 import { run } from "../../run.ts";
 
+const getHostname = async (): Promise<string> => {
+  try {
+    const hostname = Deno.hostname();
+    return hostname;
+  } catch (error) {
+    const logger = await getLogger();
+    logger.error({
+      message: "#8d1n2A Failed to get hostname",
+      error,
+    });
+    return "";
+  }
+};
+
 type Success = { success: true };
 type Failure = { success: false; errors: string[] };
 export const gitCommit = async ({
@@ -11,7 +25,10 @@ export const gitCommit = async ({
 }): Promise<Success | Failure> => {
   const logger = await getLogger();
 
-  const commitMessage = DEFAULT_COMMIT_MESSAGE;
+  const hostname = await getHostname();
+  const hostnameMessage = hostname.length > 0 ? ` on ${hostname}` : "";
+  const commitMessage = `${DEFAULT_COMMIT_MESSAGE}${hostnameMessage}`;
+
   const command = await run({
     cmd: ["git", "-C", repoPath, "commit", "--message", commitMessage],
   });
