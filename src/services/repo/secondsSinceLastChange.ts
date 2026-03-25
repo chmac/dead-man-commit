@@ -12,8 +12,11 @@ export const secondsSinceLastChange = async ({
 }): Promise<Success | Failure> => {
   const now = new Date();
 
+  const indexFile = join(".git", "index");
+  const filesToCheck = [indexFile, ...files];
+
   const secondsAgoOrErrors = await Promise.all(
-    files.map(async (file): Promise<number | string> => {
+    filesToCheck.map(async (file): Promise<number | string> => {
       const filePath = join(repoPath, file);
 
       const exists = await doesFileExist(filePath);
