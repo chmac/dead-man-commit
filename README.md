@@ -1,7 +1,8 @@
 # dead-man-commit
 
-A dead man's switch for git commits. Automatically commits (and pushes) the
-selected repositories after 30 minutes of inactivity.
+A dead man's switch for git commits. Designed to be run from cron or a similar
+scheduler every minute — it automatically commits (and pushes) the selected
+repositories after 30 minutes of inactivity.
 
 Built with [deno](https://deno.land).
 
@@ -45,7 +46,41 @@ Config values
     - `delay` - Optional, the number of seconds to wait after the last activity
     is detected before making a commit
 
-## Cron
+## Running automatically
 
-To make this useful you probably need to run it from cron or similar somewhat
-regularly.
+To make this useful you need to run it regularly. The author runs it via a
+macOS LaunchAgent every 60 seconds, though cron or any similar scheduler would
+also work. Save the following plist to
+`~/Library/LaunchAgents/com.chmac.deadmancommit.plist`, then load it with
+`launchctl load ~/Library/LaunchAgents/com.chmac.deadmancommit.plist`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.chmac.deadmancommit</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/chm/bin/arm64/dead-man-commit</string>
+  </array>
+
+  <key>Nice</key>
+  <integer>1</integer>
+
+  <key>StartInterval</key>
+  <integer>60</integer>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardErrorPath</key>
+  <string>/usr/local/var/log/dead-man-commit.err</string>
+
+  <key>StandardOutPath</key>
+  <string>/usr/local/var/log/dead-man-commit.log</string>
+</dict>
+</plist>
+```
